@@ -4,6 +4,8 @@ import { Modal } from 'shared/ui/Modal/Modal';
 import React, { useCallback, useState } from 'react';
 import { Button } from 'shared/ui/Button/Button';
 import { LoginModal } from 'features/AuthByUserName';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserAuthData, userActions } from 'entities/User';
 import cls from './Navbar.module.scss';
 
 interface NavbarProps {
@@ -13,24 +15,45 @@ interface NavbarProps {
 export const Navbar = ({ className }: NavbarProps) => {
     const { t } = useTranslation();
     const [isAuthModal, setIsAuthModal] = useState(false);
+    const userAuthData = useSelector(getUserAuthData);
+    const dispatch = useDispatch();
 
     const onCloseModal = useCallback(() => {
         setIsAuthModal(false);
     }, []);
 
     const onShowModal = useCallback(() => {
+        console.log('++++++++++++');
         setIsAuthModal(true);
     }, []);
 
+    const onLogout = useCallback(() => {
+        dispatch(userActions.logout());
+    }, [dispatch]);
+
     return (
-        <div className={classNames(cls.Navbar, {}, [className])}>
-            <Button
-                className={cls.links}
-                onClick={onShowModal}
-            >
-                {t('Войти')}
-            </Button>
-            <LoginModal isOpen={isAuthModal} onClose={onCloseModal} />
-        </div>
+        userAuthData ? (
+            <div className={classNames(cls.Navbar, {}, [className])}>
+                <Button
+                    className={cls.links}
+                    onClick={onLogout}
+                >
+                    {t('Выйти')}
+                </Button>
+            </div>
+        )
+            : (
+                <div className={classNames(cls.Navbar, {}, [className])}>
+
+                    <Button
+                        className={cls.links}
+                        onClick={onShowModal}
+                    >
+                        {t('Войти')}
+                    </Button>
+
+                    {isAuthModal && <LoginModal isOpen={isAuthModal} onClose={onCloseModal} />}
+                </div>
+            )
     );
 };
