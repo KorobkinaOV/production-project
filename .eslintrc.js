@@ -45,6 +45,7 @@ module.exports = {
         'max-len': ['error', { ignoreComments: true, code: 150 }],
         'no-unused-vars': 'off',
         'no-return-await': 'off',
+        'no-undef': 'off',
         'jsx-a11y/no-static-element-interactions': 'off',
         'jsx-a11y/click-events-have-key-events': 'off',
         'react-hooks/rules-of-hooks': 'error',
@@ -53,5 +54,6 @@ module.exports = {
     },
     globals: {
         __IS_DEV__: true,
+        __API__: true,
     },
 };
