@@ -74,9 +74,6 @@ export const Modal = (props: ModalProps) => {
         [cls.isClosing]: isClosing,
     };
 
-    console.log('lazy', lazy);
-    console.log('!isMounted', !isMounted);
-
     if (lazy && !isMounted) {
         return null;
     }
