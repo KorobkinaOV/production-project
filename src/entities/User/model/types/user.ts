@@ -1,9 +1,9 @@
 export interface User {
-    id: string,
+    id: string;
     username: string;
 }
 
 export interface UserSchema {
     authData?: User;
-
+    _inited?: boolean;
 }

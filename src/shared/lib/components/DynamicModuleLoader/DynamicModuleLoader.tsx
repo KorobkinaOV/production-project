@@ -1,36 +1,38 @@
-import { Reducer } from '@reduxjs/toolkit';
-import { ReduxStoreWithManager, StateSchema } from 'app/providers/StoreProvider';
-import { StateSchemaKey } from 'app/providers/StoreProvider/config/StateSchema';
 import { FC, useEffect } from 'react';
 import { useDispatch, useStore } from 'react-redux';
+import { ReduxStoreWithManager, StateSchemaKey } from 'app/providers/StoreProvider/config/StateSchema';
+import { Reducer } from '@reduxjs/toolkit';
 
 export type ReducersList = {
-    [name in StateSchemaKey]?: Reducer
+    [name in StateSchemaKey]?: Reducer;
 }
 
 interface DynamicModuleLoaderProps {
-    reducers: ReducersList,
-    removeAfterUnmount?: boolean
+    reducers: ReducersList;
+    removeAfterUnmount?: boolean;
 }
 
 export const DynamicModuleLoader: FC<DynamicModuleLoaderProps> = (props) => {
     const {
-        children, reducers, removeAfterUnmount,
+        children,
+        reducers,
+        removeAfterUnmount,
     } = props;
-    const dispatch = useDispatch();
+
     const store = useStore() as ReduxStoreWithManager;
+    const dispatch = useDispatch();
 
     useEffect(() => {
         Object.entries(reducers).forEach(([name, reducer]) => {
             store.reducerManager.add(name as StateSchemaKey, reducer);
-            dispatch({ type: `@INIT ${name}` });
+            dispatch({ type: `@INIT ${name} reducer` });
         });
 
         return () => {
             if (removeAfterUnmount) {
                 Object.entries(reducers).forEach(([name, reducer]) => {
                     store.reducerManager.remove(name as StateSchemaKey);
-                    dispatch({ type: `@DESTROY ${name}` });
+                    dispatch({ type: `@DESTROY ${name} reducer` });
                 });
             }
         };
@@ -38,6 +40,9 @@ export const DynamicModuleLoader: FC<DynamicModuleLoaderProps> = (props) => {
     }, []);
 
     return (
-        <div>{children}</div>
+        // eslint-disable-next-line react/jsx-no-useless-fragment
+        <>
+            {children}
+        </>
     );
 };
