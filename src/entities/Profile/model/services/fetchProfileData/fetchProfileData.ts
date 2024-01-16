@@ -9,7 +9,6 @@ export const fetchProfileData = createAsyncThunk<
     >(
         'profile/fetchProfileData',
         async (profileId, thunkApi) => {
-            console.log('profileId', profileId);
             const { extra, rejectWithValue } = thunkApi;
 
             try {
@@ -21,7 +20,6 @@ export const fetchProfileData = createAsyncThunk<
 
                 return response.data;
             } catch (e) {
-                console.log(e);
                 return rejectWithValue('error');
             }
         },
