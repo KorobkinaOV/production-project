@@ -7,20 +7,27 @@ import { Icon } from 'shared/ui/Icon/Icon';
 import cls from './ArticleViewSelector.module.scss';
 
 interface articleViewSelectorProps {
-    className?: string,
-    view: ArticleView,
-    onViewClick?: (view: ArticleView) => void
+  className?: string;
+  view: ArticleView;
+  onViewClick?: (view: ArticleView) => void;
 }
 
-const viewTypes = [{
-    view: ArticleView.SMALL,
-    icon: TiledIcon,
-}, {
-    view: ArticleView.BIG,
-    icon: ListIcon,
-}];
+const viewTypes = [
+    {
+        view: ArticleView.SMALL,
+        icon: TiledIcon,
+    },
+    {
+        view: ArticleView.BIG,
+        icon: ListIcon,
+    },
+];
 
-export const ArticleViewSelector = ({ className, view, onViewClick }: articleViewSelectorProps) => {
+export const ArticleViewSelector = ({
+    className,
+    view,
+    onViewClick,
+}: articleViewSelectorProps) => {
     const onClick = (newView: ArticleView) => () => {
         onViewClick?.(newView);
     };
@@ -31,8 +38,14 @@ export const ArticleViewSelector = ({ className, view, onViewClick }: articleVie
                 <Button
                     theme={ButtonTheme.CLEAR}
                     onClick={onClick(viewType.view)}
+                    key={viewType.view}
                 >
-                    <Icon Svg={viewType.icon} className={classNames('', { [cls.notSelected]: viewType.view !== view })} />
+                    <Icon
+                        Svg={viewType.icon}
+                        className={classNames('', {
+                            [cls.notSelected]: viewType.view !== view,
+                        })}
+                    />
                 </Button>
             ))}
         </div>
